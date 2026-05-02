@@ -6,8 +6,6 @@ serialization of the unsigned fields. Verifiers compare a fresh inclusion
 proof against the `root_hash` of an STH they already trust.
 """
 
-from __future__ import annotations
-
 from pydantic import BaseModel, ConfigDict, Field
 
 

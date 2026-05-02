@@ -1,8 +1,6 @@
 """`.dpiv-bundle` archive shapes and verification result types."""
 
-from __future__ import annotations
-
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -18,7 +16,7 @@ class BundleManifest(BaseModel):
     model_config = ConfigDict(extra="allow", frozen=True)
 
     schema_version: str = Field("manifest/v1")
-    files: list[str] = Field(default_factory=list)
+    files: List[str] = Field(default_factory=list)
 
 
 class VerifyCheck(BaseModel):
@@ -35,7 +33,7 @@ class VerifyCheck(BaseModel):
     name: str
     passed: bool
     skipped: bool = False
-    detail: str | None = None
+    detail: Optional[str] = None
 
 
 class VerifyResult(BaseModel):
@@ -48,12 +46,12 @@ class VerifyResult(BaseModel):
     model_config = ConfigDict(extra="allow", frozen=True)
 
     valid: bool
-    checks: list[VerifyCheck]
-    attestation_id: str | None = None
-    issuer_id: str | None = None
-    tree_size: int | None = None
-    skipped_checks: list[str] = Field(default_factory=list)
-    envelope: dict[str, Any] | None = Field(
+    checks: List[VerifyCheck]
+    attestation_id: Optional[str] = None
+    issuer_id: Optional[str] = None
+    tree_size: Optional[int] = None
+    skipped_checks: List[str] = Field(default_factory=list)
+    envelope: Optional[Dict[str, Any]] = Field(
         default=None,
         description="Envelope contents with the salt field stripped. Safe for display.",
     )

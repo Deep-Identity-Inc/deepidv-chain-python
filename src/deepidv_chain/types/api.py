@@ -4,9 +4,7 @@ These mirror the proof.deepidv.com surface served by the M02..M06 backend.
 All field names are snake_case on both wire and Python sides.
 """
 
-from __future__ import annotations
-
-from typing import Any, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -19,7 +17,7 @@ class InclusionProof(BaseModel):
 
     leaf_index: int = Field(..., ge=0)
     tree_size: int = Field(..., ge=0)
-    audit_path: list[str] = Field(default_factory=list)
+    audit_path: List[str] = Field(default_factory=list)
 
 
 class ConsistencyProof(BaseModel):
@@ -27,7 +25,7 @@ class ConsistencyProof(BaseModel):
 
     from_size: int = Field(..., ge=0)
     to_size: int = Field(..., ge=0)
-    audit_path: list[str] = Field(default_factory=list)
+    audit_path: List[str] = Field(default_factory=list)
     segment_id: str
 
 
@@ -39,9 +37,9 @@ class IssuerProfile(BaseModel):
     status: Literal["active", "suspended", "retired"]
     public_key_pem: str
     activated_at: str
-    retired_at: str | None = None
-    segment_ids: list[str] = Field(default_factory=list)
-    metadata: dict[str, Any] = Field(default_factory=dict)
+    retired_at: Optional[str] = None
+    segment_ids: List[str] = Field(default_factory=list)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
 
 
 class SegmentProfile(BaseModel):
@@ -51,9 +49,9 @@ class SegmentProfile(BaseModel):
     issuer_id: str
     status: Literal["open", "sealed"]
     opened_at: str
-    sealed_at: str | None = None
+    sealed_at: Optional[str] = None
     tree_size: int = Field(..., ge=0)
-    last_sth_timestamp: str | None = None
+    last_sth_timestamp: Optional[str] = None
 
 
 class AttestationDetail(BaseModel):
@@ -66,14 +64,14 @@ class AttestationDetail(BaseModel):
     leaf_index: int = Field(..., ge=0)
     tree_size_at_inclusion: int = Field(..., ge=0)
     issued_at: str
-    labels: list[Label] = Field(default_factory=list)
+    labels: List[Label] = Field(default_factory=list)
     envelope: EnvelopeV1
     inclusion_proof: InclusionProof
     sth: Sth
-    bundle_url: str | None = None
+    bundle_url: Optional[str] = None
     revoked: bool = False
-    revoked_reason: str | None = None
-    onchain_anchor: dict[str, Any] | None = None
+    revoked_reason: Optional[str] = None
+    onchain_anchor: Optional[Dict[str, Any]] = None
 
 
 class RegistrySummary(BaseModel):
@@ -83,28 +81,28 @@ class RegistrySummary(BaseModel):
     record_type: RecordType
     issuer_id: str
     issued_at: str
-    labels: list[Label] = Field(default_factory=list)
+    labels: List[Label] = Field(default_factory=list)
     revoked: bool = False
 
 
 class RegistryFilters(BaseModel):
     model_config = ConfigDict(extra="allow", frozen=False)
 
-    issuer_id: str | None = None
-    record_type: RecordType | None = None
-    label_name: str | None = None
-    label_value: str | None = None
-    issued_after: str | None = None
-    issued_before: str | None = None
-    revoked: bool | None = None
-    limit: int | None = Field(default=None, ge=1, le=200)
+    issuer_id: Optional[str] = None
+    record_type: Optional[RecordType] = None
+    label_name: Optional[str] = None
+    label_value: Optional[str] = None
+    issued_after: Optional[str] = None
+    issued_before: Optional[str] = None
+    revoked: Optional[bool] = None
+    limit: Optional[int] = Field(default=None, ge=1, le=200)
 
 
 class RegistryPage(BaseModel):
     model_config = ConfigDict(extra="allow", frozen=True)
 
-    items: list[RegistrySummary]
-    next_cursor: str | None = None
+    items: List[RegistrySummary]
+    next_cursor: Optional[str] = None
     page_size: int
 
 
@@ -113,8 +111,8 @@ class LogView(BaseModel):
 
     model_config = ConfigDict(extra="allow", frozen=True)
 
-    segments: list[SegmentProfile]
-    latest_sths: list[Sth]
+    segments: List[SegmentProfile]
+    latest_sths: List[Sth]
     fetched_at: str
 
 
@@ -124,6 +122,6 @@ class StreamEvent(BaseModel):
     model_config = ConfigDict(extra="allow", frozen=True)
 
     event: Literal["attestation.minted", "attestation.revoked", "sth.signed", "heartbeat"]
-    id: str | None = None
-    data: dict[str, Any] = Field(default_factory=dict)
-    received_at: str | None = None
+    id: Optional[str] = None
+    data: Dict[str, Any] = Field(default_factory=dict)
+    received_at: Optional[str] = None

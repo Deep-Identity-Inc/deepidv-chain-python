@@ -14,9 +14,7 @@ registry. `RSK`, `AML`, `AGR`, and `ACT` are intentionally not in the enum
 in v1 — the chain layer does not mint those record types.
 """
 
-from __future__ import annotations
-
-from typing import Any, Literal
+from typing import Any, Dict, List, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -39,7 +37,7 @@ class Label(BaseModel):
     model_config = ConfigDict(extra="allow", frozen=True)
 
     name: str = Field(..., min_length=1, max_length=128)
-    value: bool | int | float | str = Field(...)
+    value: Union[bool, int, float, str] = Field(...)
 
 
 class EnvelopeV1(BaseModel):
@@ -53,13 +51,13 @@ class EnvelopeV1(BaseModel):
 
     model_config = ConfigDict(extra="allow", frozen=True)
 
-    schema_version: Literal["envelope/v1"] = Field("envelope/v1", alias="schema_version")
+    schema_version: Literal["envelope/v1"] = Field("envelope/v1")
     attestation_id: str = Field(..., pattern=r"^attest_[0-9A-HJKMNP-TV-Z]{26}$")
     record_type: RecordType
     issuer_id: str = Field(..., min_length=1)
     subject_pseudonym: str = Field(..., pattern=r"^sha256:[0-9a-f]{64}$")
     issued_at: str = Field(..., description="RFC 3339 timestamp in UTC, with millisecond precision.")
     claim_hash: str = Field(..., pattern=r"^sha256:[0-9a-f]{64}$")
-    labels: list[Label] = Field(default_factory=list)
+    labels: List[Label] = Field(default_factory=list)
     salt: str = Field(..., min_length=32, description="Per-record privacy salt. Never render in UI.")
-    extensions: dict[str, Any] = Field(default_factory=dict)
+    extensions: Dict[str, Any] = Field(default_factory=dict)

@@ -6,9 +6,7 @@ problem". Errors raised before the request leaves the client (validation,
 local hash mismatch) are :class:`ValueError`, not API errors.
 """
 
-from __future__ import annotations
-
-from typing import Any
+from typing import Any, Optional
 
 
 class DeepidvApiError(Exception):
@@ -18,10 +16,10 @@ class DeepidvApiError(Exception):
         self,
         message: str,
         *,
-        status_code: int | None = None,
-        url: str | None = None,
-        body: Any | None = None,
-        request_id: str | None = None,
+        status_code: Optional[int] = None,
+        url: Optional[str] = None,
+        body: Optional[Any] = None,
+        request_id: Optional[str] = None,
     ) -> None:
         super().__init__(message)
         self.message = message
@@ -52,7 +50,7 @@ class DeepidvRateLimitError(DeepidvApiError):
         self,
         message: str,
         *,
-        retry_after_seconds: float | None = None,
+        retry_after_seconds: Optional[float] = None,
         **kwargs: Any,
     ) -> None:
         super().__init__(message, **kwargs)
