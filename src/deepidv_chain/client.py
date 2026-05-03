@@ -13,7 +13,18 @@ proxies, custom timeouts, mTLS, etc.).
 import asyncio
 import json
 import time
-from typing import Any, AsyncIterator, Dict, Iterator, List, Optional, Type, Union
+from types import TracebackType
+from typing import (
+    Any,
+    AsyncIterator,
+    Dict,
+    Iterator,
+    List,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+)
 from urllib.parse import urljoin
 
 import httpx
@@ -33,9 +44,11 @@ from deepidv_chain.types import (
     RegistryFilters,
     RegistryPage,
     SegmentProfile,
-    StreamEvent,
     Sth,
+    StreamEvent,
 )
+
+T = TypeVar("T")
 
 DEFAULT_BASE_URL = "https://staging-api.deepidv.com"
 DEFAULT_TIMEOUT_SECONDS = 30.0
@@ -67,7 +80,7 @@ def _resolve_url(base_url: str, path: str) -> str:
     return urljoin(base_url, path)
 
 
-def _parse_model(model_cls: Type[Any], payload: Any) -> Any:
+def _parse_model(model_cls: Type[T], payload: Any) -> T:
     return TypeAdapter(model_cls).validate_python(payload)
 
 
@@ -121,7 +134,12 @@ class Client(_BaseClient):
     def __enter__(self) -> "Client":
         return self
 
-    def __exit__(self, exc_type, exc, tb) -> None:
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc: Optional[BaseException],
+        tb: Optional[TracebackType],
+    ) -> None:
         self.close()
 
     def close(self) -> None:
@@ -263,7 +281,12 @@ class AsyncClient(_BaseClient):
     async def __aenter__(self) -> "AsyncClient":
         return self
 
-    async def __aexit__(self, exc_type, exc, tb) -> None:
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc: Optional[BaseException],
+        tb: Optional[TracebackType],
+    ) -> None:
         await self.aclose()
 
     async def aclose(self) -> None:

@@ -5,7 +5,7 @@ surface stays small. ``Client`` and ``AsyncClient`` are thin wrappers over
 httpx; this module is intentionally low-level.
 """
 
-from typing import Any, Dict, Iterator, Mapping, Optional
+from typing import Any, Dict, Iterator, List, Mapping, Optional
 
 import httpx
 
@@ -111,7 +111,7 @@ def parse_sse_block(block: str) -> Optional[Dict[str, Any]]:
 
 def iter_sse_blocks(line_iter: Iterator[str]) -> Iterator[str]:
     """Group raw lines from an SSE stream into blocks separated by blank lines."""
-    buffer: list = []
+    buffer: List[str] = []
     for line in line_iter:
         if line == "":
             if buffer:

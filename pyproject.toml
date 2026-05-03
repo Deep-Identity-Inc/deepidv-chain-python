@@ -120,7 +120,11 @@ select = [
   "RUF",  # ruff-specific
 ]
 ignore = [
-  "E501",  # line length — handled by formatter
+  "E501",   # line length — handled by formatter
+  "UP006",  # we keep typing.List/Dict for Pydantic-on-3.9 runtime resolution
+  "UP007",  # same — typing.Optional / typing.Union
+  "UP035",  # same — typing imports
+  "UP045",  # X | None deferred until 3.9 floor is dropped
 ]
 
 [tool.ruff.lint.per-file-ignores]

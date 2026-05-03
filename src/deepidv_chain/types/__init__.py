@@ -41,8 +41,8 @@ __all__ = [
     "RegistryPage",
     "RegistrySummary",
     "SegmentProfile",
-    "StreamEvent",
     "Sth",
+    "StreamEvent",
     "VerifyCheck",
     "VerifyResult",
 ]
