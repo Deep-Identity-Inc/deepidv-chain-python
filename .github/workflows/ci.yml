@@ -1,0 +1,108 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-and-typecheck:
+    name: lint + mypy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: ruff
+        run: ruff check src/ tests/
+      - name: mypy
+        run: mypy src/
+
+  test:
+    name: pytest (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: pytest
+        run: pytest -ra
+
+  parity:
+    name: cross-language parity (JCS + envelope hash)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: parity tests only
+        run: pytest tests/parity/ -ra
+
+  integration:
+    name: staging integration smoke
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: integration tests against staging
+        env:
+          DEEPIDV_STAGING: "1"
+          DEEPIDV_API_URL: "https://staging-api.deepidv.com"
+        run: pytest -ra -m integration
+
+  build:
+    name: build sdist + wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+      - name: build
+        run: python -m build
+      - name: twine check
+        run: twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
