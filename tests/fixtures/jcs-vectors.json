@@ -1,0 +1,100 @@
+{
+  "comment": "RFC 8785 / shared-deps parity vectors. Each entry: {input, canonical}. The canonical bytes here are the exact UTF-8 output the TS SDK produces for the same input.",
+  "vectors": [
+    {
+      "name": "empty-object",
+      "input": {},
+      "canonical": "{}"
+    },
+    {
+      "name": "empty-array",
+      "input": [],
+      "canonical": "[]"
+    },
+    {
+      "name": "primitives",
+      "input": {
+        "a": null,
+        "b": true,
+        "c": false,
+        "d": 0,
+        "e": -0.0,
+        "f": ""
+      },
+      "canonical": "{\"a\":null,\"b\":true,\"c\":false,\"d\":0,\"e\":0,\"f\":\"\"}"
+    },
+    {
+      "name": "key-ordering-ascii",
+      "input": {
+        "b": 2,
+        "a": 1,
+        "c": 3
+      },
+      "canonical": "{\"a\":1,\"b\":2,\"c\":3}"
+    },
+    {
+      "name": "key-ordering-mixed-case",
+      "input": {
+        "Z": 1,
+        "a": 2,
+        "A": 3,
+        "z": 4
+      },
+      "canonical": "{\"A\":3,\"Z\":1,\"a\":2,\"z\":4}"
+    },
+    {
+      "name": "string-escapes",
+      "input": {
+        "s": "a\"b\\c\nd\te"
+      },
+      "canonical": "{\"s\":\"a\\\"b\\\\c\\nd\\te\"}"
+    },
+    {
+      "name": "unicode-control-char",
+      "input": {
+        "s": "a\u0001b"
+      },
+      "canonical": "{\"s\":\"a\\u0001b\"}"
+    },
+    {
+      "name": "nested",
+      "input": {
+        "a": {
+          "b": [
+            1,
+            2,
+            {
+              "c": 3
+            }
+          ]
+        }
+      },
+      "canonical": "{\"a\":{\"b\":[1,2,{\"c\":3}]}}"
+    },
+    {
+      "name": "envelope-shape-fixture",
+      "input": {
+        "schema_version": "envelope/v1",
+        "attestation_id": "attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V",
+        "record_type": "IDV",
+        "issuer_id": "iss_acme_prod",
+        "subject_pseudonym": "sha256:9a8b7c6d5e4f30211029384756afbecddeefc0fe1d2c3b4a5968778899aabbcc",
+        "issued_at": "2026-04-01T12:34:56.789Z",
+        "claim_hash": "sha256:c0ffee0123456789abcdef0123456789abcdef0123456789abcdef0123456789",
+        "labels": [
+          {
+            "name": "Age >= 18",
+            "value": true
+          },
+          {
+            "name": "Country",
+            "value": "USA"
+          }
+        ],
+        "salt": "5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e",
+        "extensions": {}
+      },
+      "canonical": "{\"attestation_id\":\"attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V\",\"claim_hash\":\"sha256:c0ffee0123456789abcdef0123456789abcdef0123456789abcdef0123456789\",\"extensions\":{},\"issued_at\":\"2026-04-01T12:34:56.789Z\",\"issuer_id\":\"iss_acme_prod\",\"labels\":[{\"name\":\"Age >= 18\",\"value\":true},{\"name\":\"Country\",\"value\":\"USA\"}],\"record_type\":\"IDV\",\"salt\":\"5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e\",\"schema_version\":\"envelope/v1\",\"subject_pseudonym\":\"sha256:9a8b7c6d5e4f30211029384756afbecddeefc0fe1d2c3b4a5968778899aabbcc\"}"
+    }
+  ]
+}
