@@ -18,10 +18,11 @@ from typing import Any, Dict, List, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
-RecordType = Literal["IDV", "BIO", "DOC", "ADDR"]
+RecordType = Literal["IDV", "BIO", "DOC", "ADDR", "WIT"]  # WIT reserved Phase 3 — Witness attestation (DIDV-483)
 """Record types accepted by the v1 chain layer.
 
 `IDV` is active. `BIO` / `DOC` / `ADDR` are reserved for Phase 2.
+`WIT` is reserved for Phase 3 — Witness attestation (DIDV-481/483).
 `RSK` / `AML` / `AGR` / `ACT` are deliberately excluded.
 """
 
