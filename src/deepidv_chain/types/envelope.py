@@ -10,7 +10,8 @@ v1 record_types
 
 `IDV` is the only active record type in v1. `BIO`, `DOC`, and `ADDR` are
 reserved for Phase 2 and will validate as inputs but not yet appear in the
-registry. `RSK`, `AML`, `AGR`, and `ACT` are intentionally not in the enum
+registry. `WIT` is reserved for Phase 3 — Witness attestation (DIDV-481/483).
+`RSK`, `AML`, `AGR`, and `ACT` are intentionally not in the enum
 in v1 — the chain layer does not mint those record types.
 """
 

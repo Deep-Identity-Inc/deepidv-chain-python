@@ -4,6 +4,11 @@ All notable changes to `deepidv-chain` are documented here.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-06-07
+
+### Added
+- `WIT` added to `RecordType` Literal as a reserved Phase 3 type (Witness attestation, DIDV-481/483). Semver-minor: existing consumers are unaffected.
+
 ## [1.0.0] - 2026-05-02
 
 The first production release of the Python SDK for the deepidv chain layer.
