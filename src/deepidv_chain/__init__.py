@@ -43,7 +43,7 @@ from deepidv_chain.types import (
 )
 from deepidv_chain.verify import verify_bundle
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 __all__ = [
     "AsyncClient",

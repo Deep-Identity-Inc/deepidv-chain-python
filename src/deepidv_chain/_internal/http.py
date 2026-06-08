@@ -17,7 +17,7 @@ from deepidv_chain.errors import (
     DeepidvServerError,
 )
 
-DEFAULT_USER_AGENT = "deepidv-chain-python/1.0.0"
+DEFAULT_USER_AGENT = "deepidv-chain-python/1.1.0"
 
 
 def map_response_to_error(response: httpx.Response) -> DeepidvApiError:

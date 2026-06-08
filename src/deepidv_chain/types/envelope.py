@@ -10,7 +10,8 @@ v1 record_types
 
 `IDV` is the only active record type in v1. `BIO`, `DOC`, and `ADDR` are
 reserved for Phase 2 and will validate as inputs but not yet appear in the
-registry. `RSK`, `AML`, `AGR`, and `ACT` are intentionally not in the enum
+registry. `WIT` is reserved for Phase 3 — Witness attestation (DIDV-481/483).
+`RSK`, `AML`, `AGR`, and `ACT` are intentionally not in the enum
 in v1 — the chain layer does not mint those record types.
 """
 
@@ -18,10 +19,11 @@ from typing import Any, Dict, List, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
-RecordType = Literal["IDV", "BIO", "DOC", "ADDR"]
+RecordType = Literal["IDV", "BIO", "DOC", "ADDR", "WIT"]  # WIT reserved Phase 3 — Witness attestation (DIDV-483)
 """Record types accepted by the v1 chain layer.
 
 `IDV` is active. `BIO` / `DOC` / `ADDR` are reserved for Phase 2.
+`WIT` is reserved for Phase 3 — Witness attestation (DIDV-481/483).
 `RSK` / `AML` / `AGR` / `ACT` are deliberately excluded.
 """
 
