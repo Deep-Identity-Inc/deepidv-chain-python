@@ -24,10 +24,14 @@ from deepidv_chain.crypto.merkle import leaf_hash
 
 
 def _public_pem(sk: ec.EllipticCurvePrivateKey) -> str:
-    return sk.public_key().public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    ).decode()
+    return (
+        sk.public_key()
+        .public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo,
+        )
+        .decode()
+    )
 
 
 def _node(left: bytes, right: bytes) -> bytes:

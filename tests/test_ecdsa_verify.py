@@ -16,10 +16,14 @@ from deepidv_chain.crypto.ecdsa_verify import (
 @pytest.fixture
 def p256_keypair():
     sk = ec.generate_private_key(ec.SECP256R1())
-    pem = sk.public_key().public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    ).decode()
+    pem = (
+        sk.public_key()
+        .public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo,
+        )
+        .decode()
+    )
     return sk, pem
 
 
@@ -39,10 +43,14 @@ def test_verify_rejects_tampered_message(p256_keypair):
 
 def test_verify_rejects_non_p256_key():
     sk = ec.generate_private_key(ec.SECP384R1())
-    pem = sk.public_key().public_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PublicFormat.SubjectPublicKeyInfo,
-    ).decode()
+    pem = (
+        sk.public_key()
+        .public_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PublicFormat.SubjectPublicKeyInfo,
+        )
+        .decode()
+    )
     sig = sk.sign(b"x", ec.ECDSA(hashes.SHA256()))
     with pytest.raises(UnsupportedKeyError):
         verify_ecdsa_p256(public_key_pem=pem, message=b"x", signature=sig)

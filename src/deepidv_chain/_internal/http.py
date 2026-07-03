@@ -17,7 +17,7 @@ from deepidv_chain.errors import (
     DeepidvServerError,
 )
 
-DEFAULT_USER_AGENT = "deepidv-chain-python/1.1.0"
+DEFAULT_USER_AGENT = "deepidv-chain-python/1.2.0"
 
 
 def map_response_to_error(response: httpx.Response) -> DeepidvApiError:
@@ -56,9 +56,7 @@ def map_response_to_error(response: httpx.Response) -> DeepidvApiError:
                 retry_after_seconds = float(retry_after)
             except ValueError:
                 retry_after_seconds = None
-        return DeepidvRateLimitError(
-            message, retry_after_seconds=retry_after_seconds, **kwargs
-        )
+        return DeepidvRateLimitError(message, retry_after_seconds=retry_after_seconds, **kwargs)
     if 500 <= status < 600:
         return DeepidvServerError(message, **kwargs)
     return DeepidvApiError(message, **kwargs)

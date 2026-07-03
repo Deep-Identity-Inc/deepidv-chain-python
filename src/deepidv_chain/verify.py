@@ -133,7 +133,7 @@ def verify_bundle(bundle_bytes: bytes) -> VerifyResult:
         return _finalize(checks, skipped=list(DOCUMENTED_SKIPS))
 
     manifest_paths = {path for _, path in manifest_entries}
-    expected_manifest_paths = (set(files) - {"manifest.txt", "bundle-signature.bin"})
+    expected_manifest_paths = set(files) - {"manifest.txt", "bundle-signature.bin"}
     if manifest_paths != expected_manifest_paths:
         checks.append(
             VerifyCheck(
@@ -205,9 +205,7 @@ def verify_bundle(bundle_bytes: bytes) -> VerifyResult:
                     detail="envelope hash does not match inclusion proof leaf hash",
                 )
             )
-            return _finalize(
-                checks, envelope=_strip_salt(envelope), skipped=list(DOCUMENTED_SKIPS)
-            )
+            return _finalize(checks, envelope=_strip_salt(envelope), skipped=list(DOCUMENTED_SKIPS))
     checks.append(VerifyCheck(name="envelope-hash", passed=True))
 
     # 4. Inclusion proof reconstructs the STH root

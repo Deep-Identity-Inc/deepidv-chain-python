@@ -19,11 +19,19 @@ from typing import Any, Dict, List, Literal, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
-RecordType = Literal["IDV", "BIO", "DOC", "ADDR", "WIT"]  # WIT reserved Phase 3 — Witness attestation (DIDV-483)
+RecordType = Literal[
+    "IDV",  # v1 active
+    "BIO",  # reserved — Phase 2
+    "DOC",  # reserved — Phase 2
+    "ADDR",  # reserved — Phase 2
+    "WIT",  # reserved — Phase 3 (witness attestation, DIDV-483)
+    "AGT",  # reserved — Phase 3 (agent identity, DIDV-489)
+]
 """Record types accepted by the v1 chain layer.
 
 `IDV` is active. `BIO` / `DOC` / `ADDR` are reserved for Phase 2.
 `WIT` is reserved for Phase 3 — Witness attestation (DIDV-481/483).
+`AGT` is reserved for Phase 3 — Agent identity (DIDV-488/489).
 `RSK` / `AML` / `AGR` / `ACT` are deliberately excluded.
 """
 
@@ -58,8 +66,12 @@ class EnvelopeV1(BaseModel):
     record_type: RecordType
     issuer_id: str = Field(..., min_length=1)
     subject_pseudonym: str = Field(..., pattern=r"^sha256:[0-9a-f]{64}$")
-    issued_at: str = Field(..., description="RFC 3339 timestamp in UTC, with millisecond precision.")
+    issued_at: str = Field(
+        ..., description="RFC 3339 timestamp in UTC, with millisecond precision."
+    )
     claim_hash: str = Field(..., pattern=r"^sha256:[0-9a-f]{64}$")
     labels: List[Label] = Field(default_factory=list)
-    salt: str = Field(..., min_length=32, description="Per-record privacy salt. Never render in UI.")
+    salt: str = Field(
+        ..., min_length=32, description="Per-record privacy salt. Never render in UI."
+    )
     extensions: Dict[str, Any] = Field(default_factory=dict)
