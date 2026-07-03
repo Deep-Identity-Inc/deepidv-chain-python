@@ -58,9 +58,9 @@ ATTESTATION_FIXTURE = {
 
 @respx.mock
 def test_get_attestation_sync():
-    route = respx.get(
-        f"{STAGING}/v1/attestations/attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V"
-    ).mock(return_value=httpx.Response(200, json=ATTESTATION_FIXTURE))
+    route = respx.get(f"{STAGING}/v1/attestations/attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V").mock(
+        return_value=httpx.Response(200, json=ATTESTATION_FIXTURE)
+    )
 
     with Client(STAGING) as client:
         attestation = client.get_attestation("attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V")
@@ -85,9 +85,7 @@ def test_list_registry_passes_params_and_cursor():
         "next_cursor": "cur_xyz",
         "page_size": 1,
     }
-    route = respx.get(f"{STAGING}/v1/registry").mock(
-        return_value=httpx.Response(200, json=page)
-    )
+    route = respx.get(f"{STAGING}/v1/registry").mock(return_value=httpx.Response(200, json=page))
     with Client(STAGING) as client:
         result = client.list_registry({"record_type": "IDV", "revoked": False}, cursor="cur_abc")
     request = route.calls.last.request
@@ -146,16 +144,16 @@ def test_download_bundle_returns_bytes():
 @pytest.mark.asyncio
 @respx.mock
 async def test_async_get_attestation():
-    respx.get(
-        f"{STAGING}/v1/attestations/attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V"
-    ).mock(return_value=httpx.Response(200, json=ATTESTATION_FIXTURE))
+    respx.get(f"{STAGING}/v1/attestations/attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V").mock(
+        return_value=httpx.Response(200, json=ATTESTATION_FIXTURE)
+    )
     async with AsyncClient(STAGING) as client:
         attestation = await client.get_attestation("attest_01J9X9YQ7W7N2T0M5K8P3R4Q6V")
     assert attestation.issuer_id == "iss_acme_prod"
 
 
 def test_parse_sse_block_strips_optional_space():
-    block = "event: attestation.minted\nid: 42\ndata: {\"hello\":\"world\"}"
+    block = 'event: attestation.minted\nid: 42\ndata: {"hello":"world"}'
     parsed = parse_sse_block(block)
     assert parsed == {"event": "attestation.minted", "id": "42", "data": '{"hello":"world"}'}
 

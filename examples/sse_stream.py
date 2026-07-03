@@ -27,9 +27,7 @@ async def main() -> int:
                 print(".", end="", flush=True)
                 continue
             attestation_id = event.data.get("attestation_id", "?")
-            print(
-                f"\n[{event.event}] id={event.id} attestation={attestation_id}"
-            )
+            print(f"\n[{event.event}] id={event.id} attestation={attestation_id}")
     return 0
 
 

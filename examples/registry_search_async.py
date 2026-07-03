@@ -43,17 +43,12 @@ async def main() -> int:
 
     async with AsyncClient(api_url, api_key=api_key) as chain:
         # Two concurrent reads as a demo: one paged search, one log snapshot.
-        search_task = asyncio.create_task(
-            page_through(chain, {"record_type": args.record_type})
-        )
+        search_task = asyncio.create_task(page_through(chain, {"record_type": args.record_type}))
         log_task = asyncio.create_task(chain.get_log())
 
         total, log = await asyncio.gather(search_task, log_task)
 
-    print(
-        f"\n{total} attestation(s); "
-        f"log holds {len(log.segments)} active segment(s)"
-    )
+    print(f"\n{total} attestation(s); log holds {len(log.segments)} active segment(s)")
     return 0
 
 

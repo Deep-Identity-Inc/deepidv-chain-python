@@ -15,10 +15,12 @@ from deepidv_chain.crypto.manifest import (
 
 
 def test_render_manifest_is_sorted_and_two_spaces():
-    rendered = render_manifest({
-        "b.txt": b"second",
-        "a.txt": b"first",
-    }).decode()
+    rendered = render_manifest(
+        {
+            "b.txt": b"second",
+            "a.txt": b"first",
+        }
+    ).decode()
     lines = rendered.splitlines()
     assert len(lines) == 2
     assert lines[0].endswith("  a.txt")
