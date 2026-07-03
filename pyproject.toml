@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "deepidv-chain"
-version = "1.2.0"
+version = "1.1.0"
 description = "Python SDK for the deepidv chain layer — attestations, registry, transparency log, and offline bundle verification."
 readme = "README.md"
 requires-python = ">=3.9"

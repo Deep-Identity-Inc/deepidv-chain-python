@@ -18,4 +18,7 @@ class Sth(BaseModel):
     root_hash: str = Field(..., pattern=r"^sha256:[0-9a-f]{64}$")
     timestamp: str = Field(..., description="RFC 3339 UTC timestamp at which this STH was signed.")
     signer_key_id: str = Field(..., description="KMS key alias or fingerprint of the signing key.")
-    signature: str = Field(..., description="Base64-encoded ECDSA P-256 signature over the JCS-canonical unsigned form.")
+    signature: str = Field(
+        ...,
+        description="Base64-encoded ECDSA P-256 signature over the JCS-canonical unsigned form.",
+    )

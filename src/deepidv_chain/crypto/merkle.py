@@ -82,9 +82,7 @@ def verify_consistency(
     Mirrors RFC 6962 §2.1.2.
     """
     if from_size < 0 or to_size < from_size:
-        raise MerkleVerificationError(
-            f"invalid sizes: from_size={from_size}, to_size={to_size}"
-        )
+        raise MerkleVerificationError(f"invalid sizes: from_size={from_size}, to_size={to_size}")
     fr = from_root if isinstance(from_root, bytes) else _hex_to_bytes(from_root)
     tr = to_root if isinstance(to_root, bytes) else _hex_to_bytes(to_root)
 
