@@ -82,7 +82,7 @@ jobs:
         env:
           DEEPIDV_STAGING: "1"
           DEEPIDV_API_URL: "https://staging-api.deepidv.com"
-        run: pytest -ra -m integration
+        run: pytest -ra -m integration || [ $? -eq 5 ]
 
   build:
     name: build sdist + wheel
